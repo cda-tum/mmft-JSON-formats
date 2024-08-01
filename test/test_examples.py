@@ -9,12 +9,12 @@ from pydantic import ValidationError
 class TestExamples(unittest.TestCase):
 
     def test_examples(self):
-        d = 'examples'
+        directory = 'examples'
         r = []
-        for file in os.listdir(d):
+        for file in os.listdir(directory):
             filename = os.fsdecode(file)
             if filename.endswith(".json"):
-                with open(os.path.join(d, file), "r") as file:
+                with open(os.path.join(directory, file), "r") as file:
                     content = file.read()
                     try:
                         MMFTDataModel.model_validate_json(content)
@@ -26,5 +26,5 @@ class TestExamples(unittest.TestCase):
 
                     r.append((file, valid, errors))
 
-        if any([lambda f: not f[1], r]):
+        if any([not f[1] for f in r]):
             self.fail(r)

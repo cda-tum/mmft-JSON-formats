@@ -239,7 +239,11 @@ class BigDropletInjection(BaseModel):
     volume: float
     channel: int
     pos: float
-    delta_t: Optional[float] = Field(ge=0, default=None, description="If given and > 0, injections occur in regular intervals until the simulation ends, or t1")
+    delta_t: Optional[float] = Field(
+        ge=0,
+        default=None,
+        description="If given and > 0, injections occur in regular intervals until the simulation ends, or t1",
+    )
     t0: float
     t1: float
 
@@ -261,6 +265,7 @@ class Fixture(BaseModel):
     big_droplet_injections: list[BigDropletInjection]
     mixture_injections: list[MixtureInjection]
 
+
 class SimulatorType(str, Enum):
     LMB = "lbm"
 
@@ -271,7 +276,8 @@ class SimulatorType(str, Enum):
             if member.lower() == value:
                 return member
         return None
-    
+
+
 class OpeningNormal(BaseModel):
     model_config = config
 
@@ -279,11 +285,15 @@ class OpeningNormal(BaseModel):
     y: float
     z: float
 
+
 class Opening(BaseModel):
     model_config = config
 
     node: int
-    normal: OpeningNormal = Field(description="This should be a unit vector, but the conversion can better be done in the back-end. For now 'z' is probably always zero, if we don't consider fully 3D network structures.")
+    normal: OpeningNormal = Field(
+        description="This should be a unit vector, but the conversion can better be done in the back-end. For now 'z' is probably always zero, if we don't consider fully 3D network structures."
+    )
+
 
 class RectangularChannelOpening(Opening):
     model_config = config
@@ -291,10 +301,14 @@ class RectangularChannelOpening(Opening):
     width: Optional[float] = None
     height: Optional[float] = None
 
+
 class CylindricalChannelOpening(Opening):
     model_config = config
 
-    radius: Optional[float] = Field(default=None, description="Circular opening for when a cylindrical channel connects to the module")
+    radius: Optional[float] = Field(
+        default=None,
+        description="Circular opening for when a cylindrical channel connects to the module",
+    )
 
 
 class Simulator(BaseModel):
@@ -312,6 +326,7 @@ class Simulator(BaseModel):
     tau: float
     module_id: int
     openings: list[Union[RectangularChannelOpening, CylindricalChannelOpening]]
+
 
 class SimulationSettings(BaseModel):
     model_config = config
@@ -351,23 +366,112 @@ class ResultType(str, Enum):
                 return member
         return None
 
+
 class Result(BaseModel):
     model_config = config
 
     fixture: int
     type: ResultType
 
+
 class BasicResult(Result):
     model_config = config
 
-    data: str = Field(description="For now, 1D simulator results are stored 1:1 in the data field; later, they should be adapted to fit in the hybrid sim scheme")
+    data: str = Field(
+        description="For now, 1D simulator results are stored 1:1 in the data field; later, they should be adapted to fit in the hybrid sim scheme"
+    )
+
+
+class ResultFluid(BaseModel):
+    model_config = config
+
+    name: str
+    concentration: float
+    density: float
+    viscosity: float
+
+
+class ResultNode(BaseModel):
+    model_config = config
+
+    pressure: float = Field(description="In Pa")
+
+
+class MixturePosition(BaseModel):
+    model_config = config
+
+    mixture: int
+    position: float = Field(
+        description="Specifies the 'front'-position of this mixture; e.g., a channel is fully filled at position 1.0"
+    )
+
+
+class ResultChannel(BaseModel):
+    model_config = config
+
+    flow_rate: float = Field(description="In m^3/s")
+    mixture_positions: list[MixturePosition]
+
+
+class ResultModule(BaseModel):
+    model_config = config
+
+    id: int
+    vtk_content: str
+    vtk_file: str
+
+
+class Position(BaseModel):
+    model_config = config
+
+    channel_id: int
+    position: float
+
+
+class Boundary(BaseModel):
+    model_config = config
+
+    position: Position
+    volume_towards_node1: bool
+
+
+class BigDroplet(BaseModel):
+    model_config = config
+
+    fluid: int
+    volume: float
+    boundaries: list[Boundary]
+    channels: list[int] = Field(
+        description="Additional channels that the droplet fills, with no boundaries in them"
+    )
+
+
+class SmallDroplet(BaseModel):
+    model_config = config
+
+    channel: int
+    position: float
+    volume: float
+
+
+class ResultTimestep(BaseModel):
+    model_config = config
+
+    time: float
+    nodes: list[ResultNode]
+    channels: list[ResultChannel]
+    modules: list[ResultModule]
+    big_droplets: list[BigDroplet]
+    small_droplets: list[SmallDroplet]
 
 
 class ExtensiveResult(Result):
     model_config = config
 
     platform: Platform
-    #fluids: list[ResultFluid]
+    fluids: list[ResultFluid]
+    mixtures: list[Mixture]
+    network: list[ResultTimestep]
 
 
 class Settings(BaseModel):
@@ -380,7 +484,9 @@ class Settings(BaseModel):
     default_droplet_volume: float
     default_node_diameter: float
     default_simulation_duration: int
-    grid_color_argb: int = Field(alias='gridColorARGB') # Temporary fix, this is not canonic
+    grid_color_argb: int = Field(
+        alias="gridColorARGB"
+    )  # Temporary fix, this is not a canonic name
     grid_distance: float
     hybrid_sim_server_address: str
     hybrid_sim_server_port: int
@@ -402,4 +508,7 @@ class MMFTDataModel(BaseModel):
     simulation: Optional[Simulation] = None
     results: Optional[list[Union[BasicResult, ExtensiveResult]]] = None
     settings: Optional[Settings] = None
-    log: Optional[str] = Field(default=None, description="contains the entire designer log output at the time of export")
+    log: Optional[str] = Field(
+        default=None,
+        description="contains the entire designer log output at the time of export",
+    )
