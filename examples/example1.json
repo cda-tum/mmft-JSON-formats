@@ -1,0 +1,423 @@
+{
+	"network": {
+		"geometry": {
+			"width": 1,
+			"height": 1,
+			"depth": 0.2
+		},
+		"info": {
+			"id": "3786386e-bfd4-4714-b582-eec9a319e418",
+			"name": "MyNetwork",
+			"cat": "n.a.",
+			"margin": 0.03
+		},
+		"nodes": [
+			{
+				"x": 0.3648,
+				"y": 0.3528,
+				"z": 0.001,
+				"diameter": 0.02,
+				"mesh": {},
+				"3dexport": false
+			},
+			{
+				"x": 0.6744000000000001,
+				"y": 0.2008,
+				"diameter": 0.02,
+				"virtual": false
+			},
+			{
+				"x": 0.7952,
+				"y": 0.46720000000000006,
+				"diameter": 0.02,
+				"HSA": true
+			},
+			{
+				"x": 0.5,
+				"y": 0.8,
+				"diameter": 0.02,
+				"ground": true
+			}
+		],
+		"channels": [
+			{
+				"node1": 0,
+				"node2": 1,
+				"width": 0.01,
+				"height": 0.005,
+				"mesh": {
+				},
+				"generator": {
+				},
+				"bypass": true
+			},
+			{
+				"node1": 1,
+				"node2": 2,
+				"width": 0.01,
+				"height": 0.005
+			},
+			{
+				"node1": 2,
+				"node2": 0,
+				"width": 0.01,
+				"height": 0.005,
+				"virtual": false,
+				"HSA": false
+			}
+		],
+		"modules": [
+			{
+				"position": [
+					0.4,
+					0.4672,
+					0.0
+				],
+				"size": [
+					0.2952,
+					0.4,
+					0.0
+				],
+				"nodes": [
+					2,
+					3
+				]
+			}
+		],
+		"labels": [
+			{
+				"text": "some label text",
+				"x": 0.3648,
+				"y": 0.3528
+			}
+		]
+	},
+	"simulation": {
+		"platform": "Continuous",
+		"type": "Abstract",
+		"resistanceModel": "Rectangular",
+		"mixingModel": "Instantaneous",
+		"fluids": [
+			{
+				"id": "0bab565b-8f8d-4dbb-bff4-55abf1e13516",
+				"name": "Water",
+				"color": {
+					"R": 64,
+					"G": 64,
+					"B": 128,
+					"A": 64
+				},
+				"concentration": 1,
+				"density": 997,
+				"viscosity": 0.001
+			},
+			{
+				"id": "b9a20c24-3b6c-475b-a0e9-ed5bd5e26251",
+				"name": "Oil #38",
+				"color": {
+					"R": 92,
+					"G": 92,
+					"B": 64,
+					"A": 128
+				},
+				"concentration": 1,
+				"density": 913,
+				"viscosity": 0.004565
+			}
+		],
+		"species": [
+			{
+				"id": "...",
+				"name": "Oxygen",
+				"color": {
+					"R": 64,
+					"G": 64,
+					"B": 128,
+					"A": 64
+				},
+				"diffusivity": 2.3e-9,
+				"saturationConcentration": 8.3
+			},
+			{
+				"id": "...",
+				"name": "Glucose",
+				"color": {
+					"R": 128,
+					"G": 64,
+					"B": 64,
+					"A": 64
+				},
+				"diffusivity": 6.7e-10,
+				"saturationConcentration": 9.09e5
+			}
+		],
+		"mixtures": [
+			{
+				"species": [
+					0,
+					1
+				],
+				"concentrations": [
+					1.5e-9,
+					5.5e-9
+				]
+			}
+		],
+		"pumps": [
+			{
+				"channel": 1,
+				"name": "Pressure pump",
+				"color": {
+					"R": 64,
+					"G": 64,
+					"B": 64,
+					"A": 192
+				},
+				"type": "PressurePump"
+			},
+			{
+				"channel": 5,
+				"name": "Flowrate pump",
+				"color": {
+					"R": 64,
+					"G": 200,
+					"B": 64,
+					"A": 192
+				},
+				"type": "FlowratePump"
+			}
+		],
+		"fixtures": [
+			{
+				"name": "Setup #1",
+				"phase": 0,
+				"boundaryConditions": [
+					{
+						"pump": 0,
+						"deltaP": 1000
+					},
+					{
+						"pump": 1,
+						"flowRate": 1e-12
+					}
+				],
+				"bigDropletInjections": [
+					{
+						"fluid": 1,
+						"volume": 5.000000000000001e-07,
+						"channel": 1,
+						"pos": 0.3,
+						"t0": 0,
+						"deltaT": 0,
+						"t1": 0
+					},
+					{
+						"fluid": 1,
+						"volume": 5.000000000000001e-07,
+						"channel": 1,
+						"pos": 0.3,
+						"t0": 100000,
+						"deltaT": 0,
+						"t1": 0
+					}
+				],
+				"mixtureInjections": [
+					{
+						"mixture": 0,
+						"channel": 1,
+						"t0": 0.0
+					}
+				]
+			}
+		],
+		"activeFixture": 0,
+		"settings": {
+			"duration": 1.0,
+			"position": 0,
+			"step": 0.05,
+			"loop": false,
+			"vtkFolder": "../vtk",
+			"simulators": [
+				{
+					"type": "LBM",
+					"name": "Paper1a-cross-0",
+					"stlContent": "..contents of an stl file..; preferred over stlFile",
+					"stlFile": "../examples/STL/cross.stl",
+					"charPhysLength": 1e-4,
+					"charPhysVelocity": 1e-1,
+					"alpha": 0.1,
+					"resolution": 20,
+					"epsilon": 1e-1,
+					"tau": 0.55,
+					"moduleId": 0,
+					"openings": [
+						{
+							"node": 1,
+							"normal": {
+								"x": 1.0,
+								"y": 1.0,
+								"z": 0.0
+							},
+							"width": 1e-4,
+							"height": 1e-4
+						},
+						{
+							"node": 2,
+							"normal": {
+								"x": 0.3,
+								"y": 2.5,
+								"z": 0.0
+							},
+							"radius": 5e-5
+						}
+					]
+				}
+			]
+		}
+	},
+	"results": [
+		{
+			"fixture": 0,
+			"type": "1D",
+			"data": "{\"network\":{\"channels\":[{\"height\":5e-06,\"id\":1,\"length\":0.00029250914515618144,\"name\":\"\",\"node0Id\":1,\"node1Id\":2,\"type\":0,\"width\":1e-05},{\"height\":5e-06,\"id\":2,\"length\":0.00044534427132275996,\"name\":\"\",\"node0Id\":2,\"node1Id\":0,\"type\":0,\"width\":1e-05}],\"flowRatePumps\":[],\"name\":\"\",\"pressurePumps\":[{\"id\":0,\"name\":\"\",\"node0Id\":0,\"node1Id\":1,\"pressure\":1000.0}]},\"continuousPhaseId\":0,\"droplets\":[{\"fluidId\":1,\"id\":0,\"mergedDropletIds\":[],\"name\":\"\",\"volume\":5.000000000000001e-16},{\"fluidId\":1,\"id\":1,\"mergedDropletIds\":[],\"name\":\"\",\"volume\":5.000000000000001e-16}],\"fluids\":[{\"concentration\":1.0,\"density\":997.0,\"id\":0,\"mixedFluidIds\":[],\"name\":\"\",\"viscosity\":0.001},{\"concentration\":1.0,\"density\":913.0,\"id\":1,\"mixedFluidIds\":[],\"name\":\"\",\"viscosity\":0.004565}],\"injections\":[{\"dropletId\":0,\"id\":0,\"position\":{\"channelId\":1,\"position\":0.3},\"time\":0.0},{\"dropletId\":1,\"id\":1,\"position\":{\"channelId\":1,\"position\":0.39},\"time\":0.30599299999999996}],\"maximalAdaptiveTimeStep\":0.0,\"resistanceModel\":0,\"states\":[{\"dropletPositions\":{\"0\":{\"boundaries\":[],\"channelIds\":[],\"state\":0},\"1\":{\"boundaries\":[],\"channelIds\":[],\"state\":0}},\"flowRates\":{\"0\":-7.961085997987836e-14,\"1\":9.705294896615245e-14,\"2\":9.705294896615241e-14},\"id\":0,\"pressures\":{\"0\":0.0,\"1\":1000.0,\"2\":603.5674042792349},\"time\":0.0},{\"dropletPositions\":{\"0\":{\"boundaries\":[{\"flowRate\":-1.1937420085604931e-13,\"position\":{\"channelId\":1,\"position\":0.2829065173421148},\"state\":0,\"volumeTowards0\":false},{\"flowRate\":1.1937420085604931e-13,\"position\":{\"channelId\":1,\"position\":0.3170934826578852},\"state\":0,\"volumeTowards0\":true}],\"channelIds\":[],\"state\":1},\"1\":{\"boundaries\":[],\"channelIds\":[],\"state\":0}},\"flowRates\":{\"0\":-9.859191914114277e-14,\"1\":9.326109441878852e-14,\"2\":9.326109441878852e-14},\"id\":1,\"pressures\":{\"0\":0.0,\"1\":1000.0,\"2\":579.9860517192524},\"time\":0.0},{\"dropletPositions\":{\"0\":{\"boundaries\":[{\"flowRate\":-1.1937420085604931e-13,\"position\":{\"channelId\":1,\"position\":0.9658130346842296},\"state\":0,\"volumeTowards0\":false},{\"flowRate\":1.1937420085604931e-13,\"position\":{\"channelId\":2,\"position\":0.0},\"state\":0,\"volumeTowards0\":true}],\"channelIds\":[],\"state\":1},\"1\":{\"boundaries\":[],\"channelIds\":[],\"state\":0}},\"flowRates\":{\"0\":-9.859191914114277e-14,\"1\":9.326109441878852e-14,\"2\":9.326109441878852e-14},\"id\":2,\"pressures\":{\"0\":0.0,\"1\":1000.0,\"2\":579.9860517192524},\"time\":0.08366816287641952},{\"dropletPositions\":{\"0\":{\"boundaries\":[{\"flowRate\":-1.1937420085604931e-13,\"position\":{\"channelId\":2,\"position\":0.0},\"state\":0,\"volumeTowards0\":false},{\"flowRate\":1.1937420085604931e-13,\"position\":{\"channelId\":2,\"position\":0.022454538306506223},\"state\":0,\"volumeTowards0\":true}],\"channelIds\":[],\"state\":1},\"1\":{\"boundaries\":[],\"channelIds\":[],\"state\":0}},\"flowRates\":{\"0\":-7.581900543251446e-14,\"1\":9.326109441878854e-14,\"2\":9.326109441878852e-14},\"id\":3,\"pressures\":{\"0\":0.0,\"1\":1000.0,\"2\":619.0560087659601},\"time\":0.08785667259136991},{\"dropletPositions\":{\"0\":{\"boundaries\":[{\"flowRate\":-1.1937420085604931e-13,\"position\":{\"channelId\":2,\"position\":0.9775454616934938},\"state\":0,\"volumeTowards0\":false},{\"flowRate\":1.1937420085604931e-13,\"position\":{\"channelId\":2,\"position\":1.0},\"state\":0,\"volumeTowards0\":true}],\"channelIds\":[],\"state\":3},\"1\":{\"boundaries\":[],\"channelIds\":[],\"state\":0}},\"flowRates\":{\"0\":-7.961085997987836e-14,\"1\":9.705294896615245e-14,\"2\":9.705294896615241e-14},\"id\":4,\"pressures\":{\"0\":0.0,\"1\":1000.0,\"2\":603.5674042792349},\"time\":0.2702010435697072},{\"dropletPositions\":{\"0\":{\"boundaries\":[{\"flowRate\":-1.1937420085604931e-13,\"position\":{\"channelId\":2,\"position\":0.9775454616934938},\"state\":0,\"volumeTowards0\":false},{\"flowRate\":1.1937420085604931e-13,\"position\":{\"channelId\":2,\"position\":1.0},\"state\":0,\"volumeTowards0\":true}],\"channelIds\":[],\"state\":3},\"1\":{\"boundaries\":[{\"flowRate\":-1.1937420085604931e-13,\"position\":{\"channelId\":1,\"position\":0.37290651734211483},\"state\":0,\"volumeTowards0\":false},{\"flowRate\":1.1937420085604931e-13,\"position\":{\"channelId\":1,\"position\":0.4070934826578852},\"state\":0,\"volumeTowards0\":true}],\"channelIds\":[],\"state\":1}},\"flowRates\":{\"0\":-9.859191914114277e-14,\"1\":9.326109441878852e-14,\"2\":9.326109441878852e-14},\"id\":5,\"pressures\":{\"0\":0.0,\"1\":1000.0,\"2\":579.9860517192524},\"time\":0.30599299999999996},{\"dropletPositions\":{\"0\":{\"boundaries\":[{\"flowRate\":-1.1937420085604931e-13,\"position\":{\"channelId\":2,\"position\":0.9775454616934938},\"state\":0,\"volumeTowards0\":false},{\"flowRate\":1.1937420085604931e-13,\"position\":{\"channelId\":2,\"position\":1.0},\"state\":0,\"volumeTowards0\":true}],\"channelIds\":[],\"state\":3},\"1\":{\"boundaries\":[{\"flowRate\":-1.1937420085604934e-13,\"position\":{\"channelId\":1,\"position\":0.9658130346842297},\"state\":0,\"volumeTowards0\":false},{\"flowRate\":1.1937420085604934e-13,\"position\":{\"channelId\":2,\"position\":0.0},\"state\":0,\"volumeTowards0\":true}],\"channelIds\":[],\"state\":1}},\"flowRates\":{\"0\":-9.859191914114267e-14,\"1\":9.326109441878854e-14,\"2\":9.326109441878855e-14},\"id\":6,\"pressures\":{\"0\":0.0,\"1\":1000.0,\"2\":579.9860517192525},\"time\":0.378634566310633},{\"dropletPositions\":{\"0\":{\"boundaries\":[{\"flowRate\":-1.1937420085604931e-13,\"position\":{\"channelId\":2,\"position\":0.9775454616934938},\"state\":0,\"volumeTowards0\":false},{\"flowRate\":1.1937420085604931e-13,\"position\":{\"channelId\":2,\"position\":1.0},\"state\":0,\"volumeTowards0\":true}],\"channelIds\":[],\"state\":3},\"1\":{\"boundaries\":[{\"flowRate\":-1.1937420085604934e-13,\"position\":{\"channelId\":2,\"position\":0.0},\"state\":0,\"volumeTowards0\":false},{\"flowRate\":1.1937420085604934e-13,\"position\":{\"channelId\":2,\"position\":0.022454538306506153},\"state\":0,\"volumeTowards0\":true}],\"channelIds\":[],\"state\":1}},\"flowRates\":{\"0\":-7.581900543251448e-14,\"1\":9.326109441878856e-14,\"2\":9.326109441878854e-14},\"id\":7,\"pressures\":{\"0\":0.0,\"1\":1000.0,\"2\":619.05600876596},\"time\":0.3828230760255834},{\"dropletPositions\":{\"0\":{\"boundaries\":[{\"flowRate\":-1.1937420085604931e-13,\"position\":{\"channelId\":2,\"position\":0.9775454616934938},\"state\":0,\"volumeTowards0\":false},{\"flowRate\":1.1937420085604931e-13,\"position\":{\"channelId\":2,\"position\":1.0},\"state\":0,\"volumeTowards0\":true}],\"channelIds\":[],\"state\":3},\"1\":{\"boundaries\":[{\"flowRate\":-1.1937420085604934e-13,\"position\":{\"channelId\":2,\"position\":0.9775454616934939},\"state\":0,\"volumeTowards0\":false},{\"flowRate\":1.1937420085604934e-13,\"position\":{\"channelId\":2,\"position\":1.0},\"state\":0,\"volumeTowards0\":true}],\"channelIds\":[],\"state\":3}},\"flowRates\":{\"0\":-7.961085997987836e-14,\"1\":9.705294896615245e-14,\"2\":9.705294896615241e-14},\"id\":8,\"pressures\":{\"0\":0.0,\"1\":1000.0,\"2\":603.5674042792349},\"time\":0.5651674470039206}]}"
+		},
+		{
+			"fixture": 0,
+			"type": "1D",
+			"platform": "Continuous",
+			"fluids": [
+				{
+					"name": "Water",
+					"concentration": 1.0,
+					"density": 1000.0,
+					"viscosity": 0.001
+				},
+				{
+					"name": "Oil",
+					"concentration": 1.0,
+					"density": 1000.0,
+					"viscosity": 0.003
+				}
+			],
+			"mixtures": [
+				{
+					"species": [
+						0,
+						1
+					],
+					"concentrations": [
+						1.5e-9,
+						5.5e-9
+					]
+				},
+				{
+					"species": [
+						0,
+						1
+					],
+					"concentrations": [
+						0.7e-9,
+						3.0e-9
+					]
+				}
+			],
+			"network": [
+				{
+					"time": 0.01,
+					"nodes": [
+						{
+							"pressure": 675
+						},
+						{
+							"pressure": 478
+						}
+					],
+					"channels": [
+						{
+							"flowRate": 0.37,
+							"mixturePositions": [
+								{
+									"mixture": 1,
+									"position": 0.45
+								},
+								{
+									"mixture": 0,
+									"position": 1.0
+								}
+							]
+						},
+						{
+							"flowRate": 0.56,
+							"mixturePositions": [
+								{
+									"mixture": 1,
+									"position": 1.0
+								}
+							]
+						}
+					],
+					"modules": [
+						{
+							"id": 0,
+							"vtkContent": "..contents of an vtk file..; preferred over vtkFile",
+							"vtkFile": "../out/Module0t0001.vtk"
+						}
+					],
+					"bigDroplets": [
+						{
+							"fluid": 1,
+							"volume": 4.5e-13,
+							"boundaries": [
+								{
+									"position": {
+										"channelId": 1,
+										"position": 0.45
+									},
+									"volumeTowardsNode1": false
+								},
+								{
+									"position": {
+										"channelId": 1,
+										"position": 0.95
+									},
+									"volumeTowardsNode1": true
+								}
+							],
+							"channels": []
+						}
+					],
+					"smallDroplets": [
+						{
+							"channel": 7,
+							"position": 0.45,
+							"volume": 1.4e-9
+						}
+					]
+				}
+			]
+		}
+	],
+	"settings": {
+		"alignNodeToGrid": false,
+		"defaultChannelHeight": 0.005,
+		"defaultChannelWidth": 0.01,
+		"defaultDateTimeFmt": "yyyy.MM.dd hh:mm:ss",
+		"defaultDropletVolume": 5.000000000000001e-07,
+		"defaultNodeDiameter": 0.02,
+		"defaultSimulationDuration": 1000000,
+		"gridColorARGB": -16752576,
+		"gridDistance": 0.02,
+		"hybridSimServerAddress": "localhost",
+		"hybridSimServerPort": 13579,
+		"logDateTime": true,
+		"logSeverity": true,
+		"showDesignerInfo": true,
+		"showDesignerSimInfo": true,
+		"showGrid": true,
+		"showNodes": true,
+		"showChipArea": true,
+		"simulationSpeed": 5000,
+		"svgExportDimensions": 2000
+	},
+	"log": "contains the entire designer log output at the time of export.."
+}

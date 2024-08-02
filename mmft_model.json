@@ -1,0 +1,1611 @@
+{
+    "$defs": {
+        "BasicResult": {
+            "additionalProperties": false,
+            "properties": {
+                "fixture": {
+                    "title": "Fixture",
+                    "type": "integer"
+                },
+                "type": {
+                    "$ref": "#/$defs/ResultType"
+                },
+                "data": {
+                    "description": "For now, 1D simulator results are stored 1:1 in the data field; later, they should be adapted to fit in the hybrid sim scheme",
+                    "title": "Data",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "fixture",
+                "type",
+                "data"
+            ],
+            "title": "BasicResult",
+            "type": "object"
+        },
+        "BigDroplet": {
+            "additionalProperties": false,
+            "properties": {
+                "fluid": {
+                    "title": "Fluid",
+                    "type": "integer"
+                },
+                "volume": {
+                    "title": "Volume",
+                    "type": "number"
+                },
+                "boundaries": {
+                    "items": {
+                        "$ref": "#/$defs/Boundary"
+                    },
+                    "title": "Boundaries",
+                    "type": "array"
+                },
+                "channels": {
+                    "description": "Additional channels that the droplet fills, with no boundaries in them",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "title": "Channels",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "fluid",
+                "volume",
+                "boundaries",
+                "channels"
+            ],
+            "title": "BigDroplet",
+            "type": "object"
+        },
+        "BigDropletInjection": {
+            "additionalProperties": false,
+            "properties": {
+                "fluid": {
+                    "title": "Fluid",
+                    "type": "integer"
+                },
+                "volume": {
+                    "title": "Volume",
+                    "type": "number"
+                },
+                "channel": {
+                    "title": "Channel",
+                    "type": "integer"
+                },
+                "pos": {
+                    "title": "Pos",
+                    "type": "number"
+                },
+                "deltaT": {
+                    "anyOf": [
+                        {
+                            "minimum": 0.0,
+                            "type": "number"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "If given and > 0, injections occur in regular intervals until the simulation ends, or t1",
+                    "title": "Deltat"
+                },
+                "t0": {
+                    "title": "T0",
+                    "type": "number"
+                },
+                "t1": {
+                    "title": "T1",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "fluid",
+                "volume",
+                "channel",
+                "pos",
+                "t0",
+                "t1"
+            ],
+            "title": "BigDropletInjection",
+            "type": "object"
+        },
+        "Boundary": {
+            "additionalProperties": false,
+            "properties": {
+                "position": {
+                    "$ref": "#/$defs/Position"
+                },
+                "volumeTowardsNode1": {
+                    "title": "Volumetowardsnode1",
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "position",
+                "volumeTowardsNode1"
+            ],
+            "title": "Boundary",
+            "type": "object"
+        },
+        "BoundaryCondition": {
+            "additionalProperties": false,
+            "properties": {
+                "pump": {
+                    "title": "Pump",
+                    "type": "integer"
+                },
+                "deltaP": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Deltap"
+                },
+                "flowRate": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Flowrate"
+                }
+            },
+            "required": [
+                "pump"
+            ],
+            "title": "BoundaryCondition",
+            "type": "object"
+        },
+        "Channel": {
+            "additionalProperties": false,
+            "properties": {
+                "node1": {
+                    "title": "Node1",
+                    "type": "integer"
+                },
+                "node2": {
+                    "title": "Node2",
+                    "type": "integer"
+                },
+                "width": {
+                    "title": "Width",
+                    "type": "number"
+                },
+                "height": {
+                    "title": "Height",
+                    "type": "number"
+                },
+                "mesh": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/ChannelMesh"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "generator": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/ChannelGenerator"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "bypass": {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Bypass"
+                },
+                "HSA": {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Hsa"
+                },
+                "virtual": {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Virtual"
+                }
+            },
+            "required": [
+                "node1",
+                "node2",
+                "width",
+                "height"
+            ],
+            "title": "Channel",
+            "type": "object"
+        },
+        "ChannelGenerator": {
+            "additionalProperties": false,
+            "properties": {},
+            "title": "ChannelGenerator",
+            "type": "object"
+        },
+        "ChannelMesh": {
+            "additionalProperties": false,
+            "properties": {},
+            "title": "ChannelMesh",
+            "type": "object"
+        },
+        "Color": {
+            "additionalProperties": false,
+            "properties": {
+                "R": {
+                    "exclusiveMaximum": 256,
+                    "minimum": 0,
+                    "title": "R",
+                    "type": "integer"
+                },
+                "G": {
+                    "exclusiveMaximum": 256,
+                    "minimum": 0,
+                    "title": "G",
+                    "type": "integer"
+                },
+                "B": {
+                    "exclusiveMaximum": 256,
+                    "minimum": 0,
+                    "title": "B",
+                    "type": "integer"
+                },
+                "A": {
+                    "exclusiveMaximum": 256,
+                    "minimum": 0,
+                    "title": "A",
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "R",
+                "G",
+                "B",
+                "A"
+            ],
+            "title": "Color",
+            "type": "object"
+        },
+        "CylindricalChannelOpening": {
+            "additionalProperties": false,
+            "properties": {
+                "node": {
+                    "title": "Node",
+                    "type": "integer"
+                },
+                "normal": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/OpeningNormal"
+                        }
+                    ],
+                    "description": "This should be a unit vector, but the conversion can better be done in the back-end. For now 'z' is probably always zero, if we don't consider fully 3D network structures."
+                },
+                "radius": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Circular opening for when a cylindrical channel connects to the module",
+                    "title": "Radius"
+                }
+            },
+            "required": [
+                "node",
+                "normal"
+            ],
+            "title": "CylindricalChannelOpening",
+            "type": "object"
+        },
+        "ExtensiveResult": {
+            "additionalProperties": false,
+            "properties": {
+                "fixture": {
+                    "title": "Fixture",
+                    "type": "integer"
+                },
+                "type": {
+                    "$ref": "#/$defs/ResultType"
+                },
+                "platform": {
+                    "$ref": "#/$defs/Platform"
+                },
+                "fluids": {
+                    "items": {
+                        "$ref": "#/$defs/ResultFluid"
+                    },
+                    "title": "Fluids",
+                    "type": "array"
+                },
+                "mixtures": {
+                    "items": {
+                        "$ref": "#/$defs/Mixture"
+                    },
+                    "title": "Mixtures",
+                    "type": "array"
+                },
+                "network": {
+                    "items": {
+                        "$ref": "#/$defs/ResultTimestep"
+                    },
+                    "title": "Network",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "fixture",
+                "type",
+                "platform",
+                "fluids",
+                "mixtures",
+                "network"
+            ],
+            "title": "ExtensiveResult",
+            "type": "object"
+        },
+        "Fixture": {
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "title": "Name",
+                    "type": "string"
+                },
+                "phase": {
+                    "title": "Phase",
+                    "type": "integer"
+                },
+                "boundaryConditions": {
+                    "items": {
+                        "$ref": "#/$defs/BoundaryCondition"
+                    },
+                    "title": "Boundaryconditions",
+                    "type": "array"
+                },
+                "bigDropletInjections": {
+                    "items": {
+                        "$ref": "#/$defs/BigDropletInjection"
+                    },
+                    "title": "Bigdropletinjections",
+                    "type": "array"
+                },
+                "mixtureInjections": {
+                    "items": {
+                        "$ref": "#/$defs/MixtureInjection"
+                    },
+                    "title": "Mixtureinjections",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "name",
+                "phase",
+                "boundaryConditions",
+                "bigDropletInjections",
+                "mixtureInjections"
+            ],
+            "title": "Fixture",
+            "type": "object"
+        },
+        "Fluid": {
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "title": "Id",
+                    "type": "string"
+                },
+                "name": {
+                    "title": "Name",
+                    "type": "string"
+                },
+                "color": {
+                    "$ref": "#/$defs/Color"
+                },
+                "concentration": {
+                    "maximum": 1.0,
+                    "minimum": 0.0,
+                    "title": "Concentration",
+                    "type": "number"
+                },
+                "density": {
+                    "title": "Density",
+                    "type": "number"
+                },
+                "viscosity": {
+                    "title": "Viscosity",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "id",
+                "name",
+                "color",
+                "concentration",
+                "density",
+                "viscosity"
+            ],
+            "title": "Fluid",
+            "type": "object"
+        },
+        "Geometry": {
+            "additionalProperties": false,
+            "properties": {
+                "width": {
+                    "description": "Width of the chip in meters",
+                    "exclusiveMinimum": 0.0,
+                    "title": "Width",
+                    "type": "number"
+                },
+                "height": {
+                    "description": "Height of the chip in meters",
+                    "exclusiveMinimum": 0.0,
+                    "title": "Height",
+                    "type": "number"
+                },
+                "depth": {
+                    "description": "Depth of the chip in meters",
+                    "exclusiveMinimum": 0.0,
+                    "title": "Depth",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "width",
+                "height",
+                "depth"
+            ],
+            "title": "Geometry",
+            "type": "object"
+        },
+        "Info": {
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "title": "Id",
+                    "type": "string"
+                },
+                "name": {
+                    "title": "Name",
+                    "type": "string"
+                },
+                "cat": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Margin refers to the safety margin setting of the designer",
+                    "title": "Cat"
+                },
+                "margin": {
+                    "title": "Margin",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "id",
+                "name",
+                "margin"
+            ],
+            "title": "Info",
+            "type": "object"
+        },
+        "Label": {
+            "additionalProperties": false,
+            "properties": {
+                "text": {
+                    "description": "User-defined labels to document chip / experiment design considerations",
+                    "title": "Text",
+                    "type": "string"
+                },
+                "x": {
+                    "title": "X",
+                    "type": "number"
+                },
+                "y": {
+                    "title": "Y",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "text",
+                "x",
+                "y"
+            ],
+            "title": "Label",
+            "type": "object"
+        },
+        "MixingModel": {
+            "enum": [
+                "instantaneous",
+                "diffusive"
+            ],
+            "title": "MixingModel",
+            "type": "string"
+        },
+        "Mixture": {
+            "additionalProperties": false,
+            "properties": {
+                "species": {
+                    "items": {
+                        "type": "integer"
+                    },
+                    "title": "Species",
+                    "type": "array"
+                },
+                "concentrations": {
+                    "description": "Concentration can never be higher than the respective saturation concentration",
+                    "items": {
+                        "type": "number"
+                    },
+                    "title": "Concentrations",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "species",
+                "concentrations"
+            ],
+            "title": "Mixture",
+            "type": "object"
+        },
+        "MixtureInjection": {
+            "additionalProperties": false,
+            "properties": {
+                "mixture": {
+                    "title": "Mixture",
+                    "type": "integer"
+                },
+                "channel": {
+                    "title": "Channel",
+                    "type": "integer"
+                },
+                "t0": {
+                    "title": "T0",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "mixture",
+                "channel",
+                "t0"
+            ],
+            "title": "MixtureInjection",
+            "type": "object"
+        },
+        "MixturePosition": {
+            "additionalProperties": false,
+            "properties": {
+                "mixture": {
+                    "title": "Mixture",
+                    "type": "integer"
+                },
+                "position": {
+                    "description": "Specifies the 'front'-position of this mixture; e.g., a channel is fully filled at position 1.0",
+                    "title": "Position",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "mixture",
+                "position"
+            ],
+            "title": "MixturePosition",
+            "type": "object"
+        },
+        "Module": {
+            "additionalProperties": false,
+            "properties": {
+                "position": {
+                    "maxItems": 3,
+                    "minItems": 3,
+                    "prefixItems": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "title": "Position",
+                    "type": "array"
+                },
+                "size": {
+                    "maxItems": 3,
+                    "minItems": 3,
+                    "prefixItems": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "title": "Size",
+                    "type": "array"
+                },
+                "nodes": {
+                    "items": {
+                        "type": "integer"
+                    },
+                    "title": "Nodes",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "position",
+                "size",
+                "nodes"
+            ],
+            "title": "Module",
+            "type": "object"
+        },
+        "Network": {
+            "additionalProperties": false,
+            "properties": {
+                "info": {
+                    "$ref": "#/$defs/Info"
+                },
+                "geometry": {
+                    "$ref": "#/$defs/Geometry"
+                },
+                "nodes": {
+                    "items": {
+                        "$ref": "#/$defs/Node"
+                    },
+                    "title": "Nodes",
+                    "type": "array"
+                },
+                "channels": {
+                    "items": {
+                        "$ref": "#/$defs/Channel"
+                    },
+                    "title": "Channels",
+                    "type": "array"
+                },
+                "modules": {
+                    "items": {
+                        "$ref": "#/$defs/Module"
+                    },
+                    "title": "Modules",
+                    "type": "array"
+                },
+                "labels": {
+                    "items": {
+                        "$ref": "#/$defs/Label"
+                    },
+                    "title": "Labels",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "info",
+                "geometry",
+                "nodes",
+                "channels",
+                "modules",
+                "labels"
+            ],
+            "title": "Network",
+            "type": "object"
+        },
+        "Node": {
+            "additionalProperties": false,
+            "properties": {
+                "x": {
+                    "title": "X",
+                    "type": "number"
+                },
+                "y": {
+                    "title": "Y",
+                    "type": "number"
+                },
+                "z": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": 0,
+                    "title": "Z"
+                },
+                "diameter": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Diameter"
+                },
+                "mesh": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/NodeMesh"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "3dexport": {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": false,
+                    "description": "If set, the node has a 3d representation",
+                    "title": "3Dexport"
+                },
+                "virtual": {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Virtual"
+                },
+                "HSA": {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Hsa"
+                },
+                "ground": {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Ground"
+                }
+            },
+            "required": [
+                "x",
+                "y"
+            ],
+            "title": "Node",
+            "type": "object"
+        },
+        "NodeMesh": {
+            "additionalProperties": false,
+            "properties": {},
+            "title": "NodeMesh",
+            "type": "object"
+        },
+        "OpeningNormal": {
+            "additionalProperties": false,
+            "properties": {
+                "x": {
+                    "title": "X",
+                    "type": "number"
+                },
+                "y": {
+                    "title": "Y",
+                    "type": "number"
+                },
+                "z": {
+                    "title": "Z",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "x",
+                "y",
+                "z"
+            ],
+            "title": "OpeningNormal",
+            "type": "object"
+        },
+        "Platform": {
+            "enum": [
+                "continuous",
+                "bigdroplet"
+            ],
+            "title": "Platform",
+            "type": "string"
+        },
+        "Position": {
+            "additionalProperties": false,
+            "properties": {
+                "channelId": {
+                    "title": "Channelid",
+                    "type": "integer"
+                },
+                "position": {
+                    "title": "Position",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "channelId",
+                "position"
+            ],
+            "title": "Position",
+            "type": "object"
+        },
+        "Pump": {
+            "additionalProperties": false,
+            "properties": {
+                "channel": {
+                    "title": "Channel",
+                    "type": "integer"
+                },
+                "name": {
+                    "title": "Name",
+                    "type": "string"
+                },
+                "color": {
+                    "$ref": "#/$defs/Color"
+                },
+                "type": {
+                    "$ref": "#/$defs/PumpType"
+                }
+            },
+            "required": [
+                "channel",
+                "name",
+                "color",
+                "type"
+            ],
+            "title": "Pump",
+            "type": "object"
+        },
+        "PumpType": {
+            "enum": [
+                "flowratepump",
+                "pressurepump"
+            ],
+            "title": "PumpType",
+            "type": "string"
+        },
+        "RectangularChannelOpening": {
+            "additionalProperties": false,
+            "properties": {
+                "node": {
+                    "title": "Node",
+                    "type": "integer"
+                },
+                "normal": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/OpeningNormal"
+                        }
+                    ],
+                    "description": "This should be a unit vector, but the conversion can better be done in the back-end. For now 'z' is probably always zero, if we don't consider fully 3D network structures."
+                },
+                "width": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Width"
+                },
+                "height": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Height"
+                }
+            },
+            "required": [
+                "node",
+                "normal"
+            ],
+            "title": "RectangularChannelOpening",
+            "type": "object"
+        },
+        "ResistanceModel": {
+            "enum": [
+                "rectangular",
+                "poiseuille"
+            ],
+            "title": "ResistanceModel",
+            "type": "string"
+        },
+        "ResultChannel": {
+            "additionalProperties": false,
+            "properties": {
+                "flowRate": {
+                    "description": "In m^3/s",
+                    "title": "Flowrate",
+                    "type": "number"
+                },
+                "mixturePositions": {
+                    "items": {
+                        "$ref": "#/$defs/MixturePosition"
+                    },
+                    "title": "Mixturepositions",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "flowRate",
+                "mixturePositions"
+            ],
+            "title": "ResultChannel",
+            "type": "object"
+        },
+        "ResultFluid": {
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "title": "Name",
+                    "type": "string"
+                },
+                "concentration": {
+                    "title": "Concentration",
+                    "type": "number"
+                },
+                "density": {
+                    "title": "Density",
+                    "type": "number"
+                },
+                "viscosity": {
+                    "title": "Viscosity",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "name",
+                "concentration",
+                "density",
+                "viscosity"
+            ],
+            "title": "ResultFluid",
+            "type": "object"
+        },
+        "ResultModule": {
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "title": "Id",
+                    "type": "integer"
+                },
+                "vtkContent": {
+                    "title": "Vtkcontent",
+                    "type": "string"
+                },
+                "vtkFile": {
+                    "title": "Vtkfile",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "vtkContent",
+                "vtkFile"
+            ],
+            "title": "ResultModule",
+            "type": "object"
+        },
+        "ResultNode": {
+            "additionalProperties": false,
+            "properties": {
+                "pressure": {
+                    "description": "In Pa",
+                    "title": "Pressure",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "pressure"
+            ],
+            "title": "ResultNode",
+            "type": "object"
+        },
+        "ResultTimestep": {
+            "additionalProperties": false,
+            "properties": {
+                "time": {
+                    "title": "Time",
+                    "type": "number"
+                },
+                "nodes": {
+                    "items": {
+                        "$ref": "#/$defs/ResultNode"
+                    },
+                    "title": "Nodes",
+                    "type": "array"
+                },
+                "channels": {
+                    "items": {
+                        "$ref": "#/$defs/ResultChannel"
+                    },
+                    "title": "Channels",
+                    "type": "array"
+                },
+                "modules": {
+                    "items": {
+                        "$ref": "#/$defs/ResultModule"
+                    },
+                    "title": "Modules",
+                    "type": "array"
+                },
+                "bigDroplets": {
+                    "items": {
+                        "$ref": "#/$defs/BigDroplet"
+                    },
+                    "title": "Bigdroplets",
+                    "type": "array"
+                },
+                "smallDroplets": {
+                    "items": {
+                        "$ref": "#/$defs/SmallDroplet"
+                    },
+                    "title": "Smalldroplets",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "time",
+                "nodes",
+                "channels",
+                "modules",
+                "bigDroplets",
+                "smallDroplets"
+            ],
+            "title": "ResultTimestep",
+            "type": "object"
+        },
+        "ResultType": {
+            "const": "1d",
+            "enum": [
+                "1d"
+            ],
+            "title": "ResultType",
+            "type": "string"
+        },
+        "Settings": {
+            "additionalProperties": false,
+            "properties": {
+                "alignNodeToGrid": {
+                    "title": "Alignnodetogrid",
+                    "type": "boolean"
+                },
+                "defaultChannelHeight": {
+                    "title": "Defaultchannelheight",
+                    "type": "number"
+                },
+                "defaultChannelWidth": {
+                    "title": "Defaultchannelwidth",
+                    "type": "number"
+                },
+                "defaultDateTimeFmt": {
+                    "title": "Defaultdatetimefmt",
+                    "type": "string"
+                },
+                "defaultDropletVolume": {
+                    "title": "Defaultdropletvolume",
+                    "type": "number"
+                },
+                "defaultNodeDiameter": {
+                    "title": "Defaultnodediameter",
+                    "type": "number"
+                },
+                "defaultSimulationDuration": {
+                    "title": "Defaultsimulationduration",
+                    "type": "integer"
+                },
+                "gridColorARGB": {
+                    "title": "Gridcolorargb",
+                    "type": "integer"
+                },
+                "gridDistance": {
+                    "title": "Griddistance",
+                    "type": "number"
+                },
+                "hybridSimServerAddress": {
+                    "title": "Hybridsimserveraddress",
+                    "type": "string"
+                },
+                "hybridSimServerPort": {
+                    "title": "Hybridsimserverport",
+                    "type": "integer"
+                },
+                "logDateTime": {
+                    "title": "Logdatetime",
+                    "type": "boolean"
+                },
+                "logSeverity": {
+                    "title": "Logseverity",
+                    "type": "boolean"
+                },
+                "showDesignerInfo": {
+                    "title": "Showdesignerinfo",
+                    "type": "boolean"
+                },
+                "showDesignerSimInfo": {
+                    "title": "Showdesignersiminfo",
+                    "type": "boolean"
+                },
+                "showGrid": {
+                    "title": "Showgrid",
+                    "type": "boolean"
+                },
+                "showNodes": {
+                    "title": "Shownodes",
+                    "type": "boolean"
+                },
+                "showChipArea": {
+                    "title": "Showchiparea",
+                    "type": "boolean"
+                },
+                "simulationSpeed": {
+                    "title": "Simulationspeed",
+                    "type": "number"
+                },
+                "svgExportDimensions": {
+                    "title": "Svgexportdimensions",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "alignNodeToGrid",
+                "defaultChannelHeight",
+                "defaultChannelWidth",
+                "defaultDateTimeFmt",
+                "defaultDropletVolume",
+                "defaultNodeDiameter",
+                "defaultSimulationDuration",
+                "gridColorARGB",
+                "gridDistance",
+                "hybridSimServerAddress",
+                "hybridSimServerPort",
+                "logDateTime",
+                "logSeverity",
+                "showDesignerInfo",
+                "showDesignerSimInfo",
+                "showGrid",
+                "showNodes",
+                "showChipArea",
+                "simulationSpeed",
+                "svgExportDimensions"
+            ],
+            "title": "Settings",
+            "type": "object"
+        },
+        "Simulation": {
+            "additionalProperties": false,
+            "properties": {
+                "platform": {
+                    "$ref": "#/$defs/Platform"
+                },
+                "type": {
+                    "$ref": "#/$defs/Type"
+                },
+                "resistanceModel": {
+                    "$ref": "#/$defs/ResistanceModel"
+                },
+                "mixingModel": {
+                    "$ref": "#/$defs/MixingModel"
+                },
+                "fluids": {
+                    "items": {
+                        "$ref": "#/$defs/Fluid"
+                    },
+                    "title": "Fluids",
+                    "type": "array"
+                },
+                "species": {
+                    "items": {
+                        "$ref": "#/$defs/Species"
+                    },
+                    "title": "Species",
+                    "type": "array"
+                },
+                "mixtures": {
+                    "items": {
+                        "$ref": "#/$defs/Mixture"
+                    },
+                    "title": "Mixtures",
+                    "type": "array"
+                },
+                "pumps": {
+                    "items": {
+                        "$ref": "#/$defs/Pump"
+                    },
+                    "title": "Pumps",
+                    "type": "array"
+                },
+                "fixtures": {
+                    "items": {
+                        "$ref": "#/$defs/Fixture"
+                    },
+                    "title": "Fixtures",
+                    "type": "array"
+                },
+                "activeFixture": {
+                    "title": "Activefixture",
+                    "type": "integer"
+                },
+                "settings": {
+                    "$ref": "#/$defs/SimulationSettings"
+                }
+            },
+            "required": [
+                "platform",
+                "type",
+                "resistanceModel",
+                "mixingModel",
+                "fluids",
+                "species",
+                "mixtures",
+                "pumps",
+                "fixtures",
+                "activeFixture",
+                "settings"
+            ],
+            "title": "Simulation",
+            "type": "object"
+        },
+        "SimulationSettings": {
+            "additionalProperties": false,
+            "properties": {
+                "duration": {
+                    "description": "In seconds.",
+                    "title": "Duration",
+                    "type": "number"
+                },
+                "position": {
+                    "title": "Position",
+                    "type": "number"
+                },
+                "step": {
+                    "description": "In seconds.",
+                    "title": "Step",
+                    "type": "number"
+                },
+                "loop": {
+                    "title": "Loop",
+                    "type": "boolean"
+                },
+                "vtkFolder": {
+                    "title": "Vtkfolder",
+                    "type": "string"
+                },
+                "simulators": {
+                    "items": {
+                        "$ref": "#/$defs/Simulator"
+                    },
+                    "title": "Simulators",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "duration",
+                "position",
+                "step",
+                "loop",
+                "vtkFolder",
+                "simulators"
+            ],
+            "title": "SimulationSettings",
+            "type": "object"
+        },
+        "Simulator": {
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "$ref": "#/$defs/SimulatorType"
+                },
+                "name": {
+                    "title": "Name",
+                    "type": "string"
+                },
+                "stlContent": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Stlcontent"
+                },
+                "stlFile": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Stlfile"
+                },
+                "charPhysLength": {
+                    "title": "Charphyslength",
+                    "type": "number"
+                },
+                "charPhysVelocity": {
+                    "title": "Charphysvelocity",
+                    "type": "number"
+                },
+                "alpha": {
+                    "title": "Alpha",
+                    "type": "number"
+                },
+                "resolution": {
+                    "title": "Resolution",
+                    "type": "number"
+                },
+                "epsilon": {
+                    "title": "Epsilon",
+                    "type": "number"
+                },
+                "tau": {
+                    "title": "Tau",
+                    "type": "number"
+                },
+                "moduleId": {
+                    "title": "Moduleid",
+                    "type": "integer"
+                },
+                "openings": {
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/$defs/RectangularChannelOpening"
+                            },
+                            {
+                                "$ref": "#/$defs/CylindricalChannelOpening"
+                            }
+                        ]
+                    },
+                    "title": "Openings",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "type",
+                "name",
+                "charPhysLength",
+                "charPhysVelocity",
+                "alpha",
+                "resolution",
+                "epsilon",
+                "tau",
+                "moduleId",
+                "openings"
+            ],
+            "title": "Simulator",
+            "type": "object"
+        },
+        "SimulatorType": {
+            "const": "lbm",
+            "enum": [
+                "lbm"
+            ],
+            "title": "SimulatorType",
+            "type": "string"
+        },
+        "SmallDroplet": {
+            "additionalProperties": false,
+            "properties": {
+                "channel": {
+                    "title": "Channel",
+                    "type": "integer"
+                },
+                "position": {
+                    "title": "Position",
+                    "type": "number"
+                },
+                "volume": {
+                    "title": "Volume",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "channel",
+                "position",
+                "volume"
+            ],
+            "title": "SmallDroplet",
+            "type": "object"
+        },
+        "Species": {
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "title": "Id",
+                    "type": "string"
+                },
+                "name": {
+                    "title": "Name",
+                    "type": "string"
+                },
+                "color": {
+                    "$ref": "#/$defs/Color"
+                },
+                "diffusivity": {
+                    "description": "Diffusivity is the value for the species in the continuous phase in m^2/s",
+                    "title": "Diffusivity",
+                    "type": "number"
+                },
+                "saturationConcentration": {
+                    "description": "Saturation concentration is in g/m^3",
+                    "title": "Saturationconcentration",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "id",
+                "name",
+                "color",
+                "diffusivity",
+                "saturationConcentration"
+            ],
+            "title": "Species",
+            "type": "object"
+        },
+        "Type": {
+            "enum": [
+                "abstract",
+                "hybrid"
+            ],
+            "title": "Type",
+            "type": "string"
+        }
+    },
+    "additionalProperties": false,
+    "properties": {
+        "network": {
+            "$ref": "#/$defs/Network"
+        },
+        "simulation": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/Simulation"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null
+        },
+        "results": {
+            "anyOf": [
+                {
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/$defs/BasicResult"
+                            },
+                            {
+                                "$ref": "#/$defs/ExtensiveResult"
+                            }
+                        ]
+                    },
+                    "type": "array"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "title": "Results"
+        },
+        "settings": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/Settings"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null
+        },
+        "log": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "contains the entire designer log output at the time of export",
+            "title": "Log"
+        }
+    },
+    "required": [
+        "network"
+    ],
+    "title": "MMFTDataModel",
+    "type": "object"
+}
