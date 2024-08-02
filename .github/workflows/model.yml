@@ -20,3 +20,6 @@ jobs:
         run: python -m unittest discover test/
       - name: Generate JSON schema
         run: python src/generate_schema.py mmft_model.json
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        commit_message: Generate JSON schema
+        file_pattern: ./mmft_model.json
