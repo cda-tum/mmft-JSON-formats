@@ -51,6 +51,19 @@ class Node(BaseModel):
     hsa: Optional[bool] = Field(default=None, alias="HSA")
     ground: Optional[bool] = None
 
+class Arc(BaseModel):
+    model_config = config
+
+    right: bool
+    start: tuple[float, float, Optional[float]]
+    center: tuple[float, float, Optional[float]]
+    end: tuple[float, float, Optional[float]]
+
+class LineSegment(BaseModel):
+    model_config = config
+
+    start: tuple[float, float, Optional[float]]
+    end: tuple[float, float, Optional[float]]
 
 class ChannelMesh(BaseModel):
     model_config = config
@@ -71,6 +84,7 @@ class Channel(BaseModel):
     node2: int
     width: float
     height: float
+    pieces: Optional[list[Union[LineSegment, Arc]]] = None
     mesh: Optional[ChannelMesh] = None
     generator: Optional[ChannelGenerator] = None
     bypass: Optional[bool] = None
@@ -94,7 +108,6 @@ class Label(BaseModel):
     )
     x: float
     y: float
-
 
 class Network(BaseModel):
     model_config = config
